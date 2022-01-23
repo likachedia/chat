@@ -12,20 +12,10 @@ export const saveDataToLocalStorage = () => {
   }));
 }
 
-const checkReply = (arr, id) => {
-    console.log("checking")
-    arr.map((ele) => {
-      console.log(ele.id)
-      console.log(id)
-      if(ele.id == id) {
-        console.log(ele.id)
-        ele.score = score;
-        return ele;
-      } else {
-        console.log("checking2")
-        return ele;
-      }
-    })
+const deleteReplyFromData = (replyid) => {
+  comments.forEach(ele => {
+    ele.replies = ele.replies.filter((item) => item.id != replyid)
+  });
 }
 
 const scoreUpHandler = (score, id) => {
@@ -97,6 +87,7 @@ export function repliedComment(vote, image, user, comDate, text, id) {
     let parent = event.currentTarget.parentElement
     //parent.parentElement.remove()
     commentDiv.remove()
+    deleteReplyFromData(id)
     saveDataToLocalStorage();
     console.log(parent.parentElement);
   })
