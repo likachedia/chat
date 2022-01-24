@@ -15,7 +15,7 @@ const saveDataToLocalStorage = () => {
 }
 
 const deleteCommentFromData = (comid) => {
-  comments = comments.filter((ele) => ele.id != comid) 
+  comments = comments.filter((ele) => ele.id != comid)
 }
 
 const checkReply = (arr) => {

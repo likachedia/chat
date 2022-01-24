@@ -15,14 +15,6 @@ comments.sort((a, b) => { a.score - b.score}).forEach((ele) => {
 
     createComment(score, webp, username, createdAt, content, replies, id);
 
-    // if(replies.length != 0) {
-    //     replies.forEach((ele) => {
-    //         const {content, createdAt, score, user} = ele;
-    //         const {username, image} = user
-    //         const {webp} = image            
-    //         createComment(score, webp, username, createdAt, content);
-    //     })
-    // }
 })
 
 

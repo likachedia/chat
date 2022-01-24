@@ -34,36 +34,7 @@ const saveDataToLocalStorage = () => {
     }));
 }
 
-const scoreUpHandler = (score, id) => {
-    let counter = 0;
-    comments = comments.map((ele) => {
-        if(ele.id == id) {
-          ele.score = score;
-          counter += 1;
-          return ele;
-        } else {
-          if(counter == 0) {
-  
-            ele.replies.map((ele) => {
-              console.log(ele.id)
-              console.log(id)
-              if(ele.id == id) {
-                console.log(ele.id)
-                ele.score = score;
-                return ele;
-              } else {
-                console.log("checking2")
-                return ele;
-              }
-            })
-  
-  
-          }
-          return ele;
-        }
-    })
-    saveDataToLocalStorage();
-}
+
 const appendNewReply = (id, vote, image, user, comDate, text) => {
     const wraper = document.getElementById(id);
     const newReply = repliedComment(vote, image, user, comDate, text, id);
