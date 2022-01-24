@@ -7,7 +7,7 @@ const root = document.querySelector(".root");
 
 let {currentUser, comments} = getData();
 
-comments.forEach((ele) => {
+comments.sort((a, b) => { a.score - b.score}).forEach((ele) => {
 
     const {content, createdAt, score, user, replies, id} = ele;
     const {username, image} = user
