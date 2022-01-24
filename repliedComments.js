@@ -1,7 +1,9 @@
 
 import { replyButton } from "./replyButton.js";
 import { getData } from "./data.js";
-import {createVoteDiv} from "./voteDiv.js"
+import {createVoteDiv} from "./voteDiv.js";
+import {createComment} from "./comment.js";
+import { sendButton } from "./sendBtn.js";
 
 let {currentUser, comments} = getData();
 
@@ -12,21 +14,34 @@ export const saveDataToLocalStorage = () => {
   }));
 }
 
+const updateCommentInData = (commentId, content, replies) => {
+  comments = comments.map((ele) => {
+    if(ele.id == commentId) {
+      console.log("outside", ele.replies);
+      console.log("outside", replies);
+      ele.content = content;
+      ele.replies = replies;
+      return ele;
+    } else {
+      return ele;
+    }
+
+  })
+}
+
 const deleteReplyFromData = (replyid) => {
   comments.forEach(ele => {
     ele.replies = ele.replies.filter((item) => item.id != replyid)
   });
 }
 
-const scoreUpHandler = (score, id) => {
+const scoreHandler = (score, id) => {
   comments = comments.map((ele) => {
     if (ele.id == id) {
       ele.score = score;
     } 
     else {
       ele.replies = ele.replies.map((reply) => {
-        console.log(reply.id);
-        console.log(id);
         if (reply.id == id) {
           reply.score = score;
         }
@@ -38,12 +53,12 @@ const scoreUpHandler = (score, id) => {
     saveDataToLocalStorage();
 }
 
-export function repliedComment(vote, image, user, comDate, text, id) {
+export function repliedComment(vote, image, user, comDate, text, id, replies = []) {
   const commentDiv = document.createElement("div");
   const contentDiv = document.createElement("div");
   const imgDiv = document.createElement("div");
   const userImage = document.createElement("img");
-  const voteDiv = createVoteDiv(vote, scoreUpHandler, id);
+  const voteDiv = createVoteDiv(vote, scoreHandler, id);
   const commentInfo = document.createElement("div");
   const userName = document.createElement("p");
   const date = document.createElement("p");
@@ -53,6 +68,7 @@ export function repliedComment(vote, image, user, comDate, text, id) {
   const deleteBtn = document.createElement("p");
   const edit = document.createElement("p");
 
+  const updateInput = document.createElement("textarea");
 
   const root = document.querySelector(".root");
 
@@ -72,7 +88,7 @@ export function repliedComment(vote, image, user, comDate, text, id) {
   userName.textContent = user;
   //voteDiv.textContent = vote;
   commentText.textContent = text;
-
+  updateInput.value = text;
 
   imgDiv.appendChild(userImage);
   if(user == currentUser.username) {
@@ -91,6 +107,23 @@ export function repliedComment(vote, image, user, comDate, text, id) {
     saveDataToLocalStorage();
     console.log(parent.parentElement);
   })
+
+  const updateHandler = () => {
+    contentDiv.removeChild(commentText);
+    const update = sendButton("update");
+    contentDiv.append(updateInput);
+    update.addEventListener("click", () => {
+      let newContent = updateInput.value;
+      updateCommentInData(id, newContent, replies);
+      saveDataToLocalStorage();
+      commentDiv.remove();
+      createComment(vote, image, user, comDate, newContent, replies, id);
+    })
+    commentInfo.removeChild(reply);
+    commentInfo.append(update);
+  }
+
+  edit.addEventListener("click", updateHandler)
 
   return commentDiv;
 

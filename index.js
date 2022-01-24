@@ -19,6 +19,7 @@ comments.sort((a, b) => { a.score - b.score}).forEach((ele) => {
 
 
 const mainComment = creatReply(currentUser);
+
 root.append(mainComment);
 
 
